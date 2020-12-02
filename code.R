@@ -111,7 +111,7 @@ cumulative_lines_per_character_most_talkative = cbind(
 do_one_plot(
   most_lines_per_episode, 
   "Most Loquatious Character in South Park", 
-  "Which character speaks the most lines in each episode? (Season 1-18)"
+  "Which character speaks the most lines in each episode? (Seasons 1-18)"
 )
 
 ggsave(
@@ -161,7 +161,7 @@ do_one_plot = function(data, title, subtitle) {
       title = title,
       subtitle = subtitle,
       fill = "Character (Total Lines Spoken)",
-      caption = "* The number within each tile represents the number of lines spoken by the character in the episode."
+      caption = "* The number within each tile represents the number of lines spoken by the most loquatious character."
     ) + 
     theme(
       panel.grid.major = element_blank(), 
