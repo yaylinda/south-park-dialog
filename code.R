@@ -110,7 +110,7 @@ cumulative_lines_per_character_most_talkative = cbind(
 
 do_one_plot(
   most_lines_per_episode, 
-  "Most Loquatious Character in South Park", 
+  "Most Loquatious Character in South Park (1997-2014)", 
   "Which character speaks the most lines in each episode? (Seasons 1-18)"
 )
 
