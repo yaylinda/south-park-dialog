@@ -156,13 +156,14 @@ do_one_plot = function(data, title, subtitle) {
     ) + 
     coord_equal(ratio = 1) + 
     labs(
-      x = "Episode in Season",
+      x = "Episode\n",
       y = "Season",
       title = title,
       subtitle = subtitle,
       fill = "Character (Total Lines Spoken)",
       caption = "* The number within each tile represents the number of lines spoken by the most loquatious character."
     ) + 
+    scale_x_discrete(position = "top") +
     theme(
       panel.grid.major = element_blank(), 
       panel.grid.minor = element_blank(), 
@@ -171,7 +172,7 @@ do_one_plot = function(data, title, subtitle) {
       strip.text.x = element_text(size = 12),
       plot.title = element_text(size = 20),
       axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 10)),
-      axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 10, l = 0)),
-      plot.subtitle = element_text(margin = margin(t = 5, r = 0, b = 10, l = 0)),
+      axis.title.x = element_text(margin = margin(t = 0, r = 0, b = 0, l = 0)),
+      plot.subtitle = element_text(margin = margin(t = 5, r = 0, b = 20, l = 0)),
     )
 }
