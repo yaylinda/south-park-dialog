@@ -4,6 +4,8 @@ library(ggplot2);
 data = read.csv("data.csv", header = T);
 data$line_count = 1;
 
+data$Character[data$Character == "Mr. Garrison"] = "Garrison"
+
 num_lines_per_season_episode_character = aggregate(
   data$line_count, 
   by = list(
@@ -45,9 +47,16 @@ cumulative_lines_per_character = aggregate(
 colnames(cumulative_lines_per_character) = c("Character", "LinesSpoken");
 
 NUM_CHARACTERS_TO_PLOT = 10;
-cumulative_lines_per_character = cumulative_lines_per_character[order(-cumulative_lines_per_character$LinesSpoken), ]
+
+cumulative_lines_per_character = cumulative_lines_per_character[
+  order(-cumulative_lines_per_character$LinesSpoken), 
+];
 cumulative_lines_per_character_most_talkative = cumulative_lines_per_character[1:NUM_CHARACTERS_TO_PLOT, ]
-cumulative_lines_per_character_most_talkative = rbind(cumulative_lines_per_character_most_talkative, c("Other", ""))
+
+cumulative_lines_per_character_most_talkative = rbind(
+  cumulative_lines_per_character_most_talkative, 
+  c("Other", sum(cumulative_lines_per_character[-(1:NUM_CHARACTERS_TO_PLOT), 2]))
+)
 
 most_talkative_characters = cumulative_lines_per_character_most_talkative$Character;
 
@@ -80,7 +89,7 @@ most_lines_per_episode$CharacterLabel = factor(
 do_one_plot(
   most_lines_per_episode, 
   "Most Loquatious Character in South Park", 
-  "Which character has the most lines in each episode?"
+  "Which character speaks the most lines in each episode?"
 )
 
 ggsave(
@@ -128,7 +137,7 @@ do_one_plot = function(data, title, subtitle) {
       title = title,
       subtitle = subtitle,
       caption = "Visualization by @yaylinda",
-      fill = "Character"
+      fill = "Character (Total Lines Spoken)"
     ) + 
     theme(
       panel.grid.major = element_blank(), 
@@ -137,7 +146,7 @@ do_one_plot = function(data, title, subtitle) {
       strip.text.y = element_text(size = 12, angle = 180),
       strip.text.x = element_text(size = 12),
       plot.title = element_text(size = 20),
-      axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 0)),
+      axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 10)),
       axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 10, l = 0)),
       plot.subtitle = element_text(margin = margin(t = 5, r = 0, b = 10, l = 0))
     )
