@@ -1,3 +1,3 @@
-# south-park-dialog
+# South Park Dialog
 
 ![plot](plot.png)
