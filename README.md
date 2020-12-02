@@ -1,3 +1,3 @@
 # south-park-dialog
 
-![plot]("/plot.png")
+![plot](plot.png)
