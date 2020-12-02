@@ -21,14 +21,24 @@ most_lines_per_episode = data.frame(c(), c(), c(), c())
 for (seasonNum in 1:max(data$Season)) {
   for (episodeNum in 1:max(data[which(data$Season == seasonNum), ]$Episode)) {
     
-    season_subset = num_lines_per_season_episode_character[which(num_lines_per_season_episode_character$Season == seasonNum), ]
-    season_episode_subset = season_subset[which(season_subset$Episode == episodeNum), ]
+    season_subset = num_lines_per_season_episode_character[
+      which(num_lines_per_season_episode_character$Season == seasonNum), 
+    ]
+    
+    season_episode_subset = season_subset[
+      which(season_subset$Episode == episodeNum), 
+    ]
     
     max_lines = max(season_episode_subset$x)
     
-    character = season_episode_subset[which(season_episode_subset$x == max_lines), ]$Character
+    character = season_episode_subset[
+      which(season_episode_subset$x == max_lines), 
+    ]$Character
     
-    most_lines_per_episode = rbind(most_lines_per_episode, c(seasonNum, episodeNum, max_lines, character))
+    most_lines_per_episode = rbind(
+      most_lines_per_episode, 
+      c(seasonNum, episodeNum, max_lines, character)
+    )
   }
 }
 
@@ -51,6 +61,7 @@ NUM_CHARACTERS_TO_PLOT = 10;
 cumulative_lines_per_character = cumulative_lines_per_character[
   order(-cumulative_lines_per_character$LinesSpoken), 
 ];
+
 cumulative_lines_per_character_most_talkative = cumulative_lines_per_character[1:NUM_CHARACTERS_TO_PLOT, ]
 
 cumulative_lines_per_character_most_talkative = rbind(
@@ -84,6 +95,17 @@ most_lines_per_episode$CharacterLabel = ifelse(
 most_lines_per_episode$CharacterLabel = factor(
   most_lines_per_episode$CharacterLabel, 
   levels = most_talkative_characters
+)
+
+num_episodes_most_lines = aggregate(
+  most_lines_per_episode$CharacterCount,
+  by = list(most_lines_per_episode$CharacterLabel),
+  sum
+)
+
+cumulative_lines_per_character_most_talkative = cbind(
+  cumulative_lines_per_character_most_talkative, 
+  NumEpisodesMostLines = num_episodes_most_lines$x
 )
 
 do_one_plot(
@@ -125,7 +147,9 @@ do_one_plot = function(data, title, subtitle) {
       labels = paste(
         cumulative_lines_per_character_most_talkative$Character,
         " (",
-        cumulative_lines_per_character_most_talkative$LinesSpoken, 
+        cumulative_lines_per_character_most_talkative$LinesSpoken,
+        ", ",
+        cumulative_lines_per_character_most_talkative$NumEpisodesMostLines,
         ")",
         sep = ""
       )
@@ -136,8 +160,7 @@ do_one_plot = function(data, title, subtitle) {
       y = "Season",
       title = title,
       subtitle = subtitle,
-      caption = "Visualization by @yaylinda",
-      fill = "Character (Total Lines Spoken)"
+      fill = "Character (Total Lines Spoken, Num Episodes)"
     ) + 
     theme(
       panel.grid.major = element_blank(), 
@@ -148,6 +171,6 @@ do_one_plot = function(data, title, subtitle) {
       plot.title = element_text(size = 20),
       axis.title.y = element_text(margin = margin(t = 0, r = 10, b = 0, l = 10)),
       axis.title.x = element_text(margin = margin(t = 10, r = 0, b = 10, l = 0)),
-      plot.subtitle = element_text(margin = margin(t = 5, r = 0, b = 10, l = 0))
+      plot.subtitle = element_text(margin = margin(t = 5, r = 0, b = 10, l = 0)),
     )
 }
